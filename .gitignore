@@ -1,0 +1,5 @@
+_venv/
+media/
+.vscode/launch.json
+__pycache__/
+run.bat
