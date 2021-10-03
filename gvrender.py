@@ -1,4 +1,4 @@
-from helpers.common import flattenList
+from helpers.common import flattenList, flattenRenderList, playRenderGroup
 from gvtriangle import GVTriangle
 from gvheader import GVHeader 
 from manim import *
@@ -12,6 +12,7 @@ class GVRender:
     "ParallelLine": ('im', lambda diag, fargs: diag.setParallelLine(*fargs)), #instance method
     "Title": ('c', lambda fargs: GVHeader(title=fargs[0])),
     "ShowAngles": ('im', lambda diag, fargs: diag.showAngles(*fargs)), #instance method
+    "HighlightAngles": ('im', lambda diag, fargs: diag.highlightAngles(*fargs)), #instance method
   }
 
   def __init__(self, scene):
@@ -27,8 +28,8 @@ class GVRender:
     self.render()
 
   def initSection(self, section_name):
-    if section_name == "diag":
-      self.diag_group = VGroup()
+    if section_name == 'proof':
+      self.gi_list[-1].setSection(section_name)
 
   def constructSection(self, section_def):
     for step in section_def:
@@ -39,6 +40,7 @@ class GVRender:
         self.gi_list.append(method(fargs))
       if method_type == 'im':
         gi = self.gi_list[-1]  #geometry instance
+        gi.addComment(step['comments'] if 'comments' in step else None)
         method(gi, fargs)
 
   def renderSection(self, section_name):
@@ -61,6 +63,19 @@ class GVRender:
 
     vg.move_to([-config.frame_width/4, 0, 0])
 
+  def scaleToRight(self, vg):
+    fh = config.frame_height * 0.8
+    fw = config.frame_width * 0.5
+
+    if vg.height > fh:
+      vg.scale_to_fit_height(fh)
+
+    if vg.width > fw:
+      vg.scale_to_fit_width(fw)
+
+    vg.move_to([config.frame_width/4, 0, 0])
+
+
   def render(self):
     self.renderHeader()
     self.renderDiag()
@@ -76,14 +91,24 @@ class GVRender:
 
   def renderDiag(self):
     pass
-  
+
   def renderProof(self):
     diag_gi = self.gi_list[1]
-    diag_mo_list = flattenList(diag_gi.render_list)
-    self.diag_group.add(*diag_mo_list)
-    self.scaleToLeft(self.diag_group)
+    diag_mo_list = flattenRenderList(diag_gi.diag_render_list)
+    diag_mo_list.extend(flattenRenderList(diag_gi.proof_render_list))
+    vg = VGroup(*diag_mo_list)
+    self.scaleToLeft(vg)
+    # but render diag objects
+    for render_group in diag_gi.diag_render_list:
+      playRenderGroup(self.scene, render_group)
+
     # but render proof objects
-    for render_group in diag_gi.render_list:
-      play_list = [ Create(mo) for mo in render_group ]
-      self.scene.play(*play_list)
-      self.scene.wait()
+    clist = flattenRenderList(diag_gi.comment_list)
+    vg = VGroup(*clist)
+    self.scaleToRight(vg)
+
+    for index, render_group in enumerate(diag_gi.proof_render_list):
+      if len(diag_gi.comment_list[index]) > 0:
+        playRenderGroup(self.scene, diag_gi.comment_list[index])
+
+      playRenderGroup(self.scene, render_group)

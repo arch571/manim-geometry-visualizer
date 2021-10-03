@@ -15,8 +15,11 @@ class GV(Scene):
       Ang(B) = 70
 
       [proof]
-      Line(DE, A) || BC #desc Draw line DE parallel to BC passing thru A
-      ShowAngles(DAB, BAC, CAE)  #desc sum of angles = 180
+      Line(DE, A) || BC #desc 1. Draw line DE parallel to BC passing thru A
+      ShowAngles(DAB, BAC, CAE)  #desc 2. Sum of angles $\\angle DAB$, $\\angle BAC$ and $\\angle CAE$ = 180
+      HighlightAngles(DAB, CBA) #desc 3. $\\angle DAB = \\angle CBA$; corresponding angles between parallel lines
+      HighlightAngles(CAE, ACB) #desc 4. $\\angle CAE = \\angle BCA$; corresponding angles between parallel lines
+      HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\angle CBA$ + $\\angle BCA$ + $\\angle BAC$ = 180
 
     """
 

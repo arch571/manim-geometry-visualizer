@@ -7,7 +7,10 @@ class GVTriangle:
     self.labels = list(labels)
     self.angles = angles
     self.height = height
-    self.render_list = []
+    self.current_section = 'diag'
+    self.diag_render_list = []
+    self.proof_render_list = []
+    self.comment_list = []
     self.mo_lines = {}
     self.mo_points = {}
 
@@ -18,11 +21,45 @@ class GVTriangle:
       self.addVerticesAndEdges()
 
   def showAngles(self, *angles):
-    pass
+    angle_list = []
+    for angle_name in angles:
+      l1_name = angle_name[0:2]
+      l1 = self.mo_lines[l1_name] if l1_name in self.mo_lines else self.mo_lines[l1_name[1::-1]]
+      q1 = -1 if l1_name in self.mo_lines else 1
+      l2_name = angle_name[1:]
+      l2 = self.mo_lines[l2_name] if l2_name in self.mo_lines else self.mo_lines[l2_name[2::-1]]
+      q2 = 1 if l2_name in self.mo_lines else -1
+      angle_list.append(Angle(l1, l2, radius=1, color=GREEN, quadrant=(q1, q2)))
+
+    self.addToRenderList(angle_list, mode="serial")
+
+  def highlightAngles(self, *angles):
+    angle_list = []
+    for angle_name in angles:
+      l1_name = angle_name[0:2]
+      l1 = self.mo_lines[l1_name] if l1_name in self.mo_lines else self.mo_lines[l1_name[1::-1]]
+      q1 = -1 if l1_name in self.mo_lines else 1
+      l2_name = angle_name[1:]
+      l2 = self.mo_lines[l2_name] if l2_name in self.mo_lines else self.mo_lines[l2_name[2::-1]]
+      q2 = 1 if l2_name in self.mo_lines else -1
+      angle_list.append(Angle(l1, l2, radius=1, color=RED, quadrant=(q1, q2)))
+
+    self.addToRenderList(angle_list, anim_method=Indicate, run_time=6.0)
+
+
+  def setSection(self, section_name):
+    self.current_section = section_name
 
   def canGetVertices(self):
     return self.angles.count(0) <= 1
   
+  def addToRenderList(self, rlist, anim_method=Create, mode="parallel", run_time=1.0):
+    r = { "mo_list": rlist, "anim_method": anim_method, "mode": mode, "run_time": run_time }
+    if self.current_section == 'diag':
+      self.diag_render_list.append(r)
+    else:
+      self.proof_render_list.append(r)
+
   def addVerticesAndEdges(self):
     if self.angles.count(0) == 1:
       #determine third angle
@@ -57,13 +94,24 @@ class GVTriangle:
     line_name = self.labels[2]+self.labels[0]
     self.mo_lines[line_name] = mo_l3
 
-    self.render_list.append([d1, d2, d3, mo_l1, mo_l2, mo_l3])
-
+    self.addToRenderList([d1, d2, d3, mo_l1, mo_l2, mo_l3])
     mo_lbl1 = Text(self.labels[0]).next_to(mo_l1.get_start(), UP)
     mo_lbl2 = Text(self.labels[1]).next_to(mo_l2.get_start(), LEFT)
     mo_lbl3 = Text(self.labels[2]).next_to(mo_l3.get_start(), RIGHT)
-    self.render_list.append([mo_lbl1, mo_lbl2, mo_lbl3])
+    self.addToRenderList([mo_lbl1, mo_lbl2, mo_lbl3])
   
+
+  def addComment(self, comment, anim_method=Create, mode="parallel", run_time=1.0):
+    if self.current_section != 'proof': return False
+    r = { "mo_list":[], "anim_method": anim_method, "mode": mode, "run_time": run_time }
+    if comment:
+      mo_text = Tex(comment, should_center=False, color="#24FFFF")
+      if len(self.comment_list) > 0:
+        mo_text.next_to(self.comment_list[-1]["mo_list"][0], direction=DOWN, aligned_edge=LEFT)
+      r["mo_list"].append(mo_text)
+    
+    self.comment_list.append(r)
+
 
   def setParallelLine(self, line_name, via, to):
     x1, y1, _ = self.mo_points[to[0]].get_arc_center()
@@ -85,12 +133,14 @@ class GVTriangle:
     self.mo_points[line_name[0]] = d1
     self.mo_points[line_name[1]] = d2
 
-    mo_line = Line(d1.get_arc_center(), d2.get_arc_center())
-    self.mo_lines[line_name] = mo_line
-    self.render_list.append([d1, d2, mo_line])
-    mo_lbl1 = Text(line_name[0]).next_to(mo_line.get_start(), LEFT)
-    mo_lbl2 = Text(line_name[1]).next_to(mo_line.get_end(), RIGHT)
-    self.render_list.append([mo_lbl1, mo_lbl2])
+    mo_line1 = Line(d1.get_arc_center(), self.mo_points[via].get_arc_center())
+    self.mo_lines[line_name[0]+via] = mo_line1
+    mo_line2 = Line(self.mo_points[via].get_arc_center(), d2.get_arc_center())
+    self.mo_lines[via+line_name[1]] = mo_line2
+
+    mo_lbl1 = Text(line_name[0]).next_to(mo_line1.get_start(), LEFT)
+    mo_lbl2 = Text(line_name[1]).next_to(mo_line2.get_end(), RIGHT)
+    self.addToRenderList([d1, d2, mo_line1, mo_line2, mo_lbl1, mo_lbl2])
 
   def setMidpoint(self, line_name, label):
     pos0 = self.labels.index(line_name[0])
