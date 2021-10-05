@@ -1,8 +1,0 @@
-[diag]
-  Triangle(ABC)
-  Ang(A) = 90
-  Ang(B) = 30
-  M = Mid(BC)
-  LineSegment(AM)
-
-

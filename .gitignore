@@ -3,4 +3,4 @@ media/*
 .vscode/launch.json
 __pycache__/
 run.bat
-!media/GV.mp4
+
