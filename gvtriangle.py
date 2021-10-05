@@ -44,7 +44,7 @@ class GVTriangle:
       q2 = 1 if l2_name in self.mo_lines else -1
       angle_list.append(Angle(l1, l2, radius=1, color=RED, quadrant=(q1, q2)))
 
-    self.addToRenderList(angle_list, anim_method=Indicate, run_time=6.0)
+    self.addToRenderList(angle_list, anim_method=Indicate, run_time=6.0, scale_factor=1.5)
 
 
   def setSection(self, section_name):
@@ -53,8 +53,8 @@ class GVTriangle:
   def canGetVertices(self):
     return self.angles.count(0) <= 1
   
-  def addToRenderList(self, rlist, anim_method=Create, mode="parallel", run_time=1.0):
-    r = { "mo_list": rlist, "anim_method": anim_method, "mode": mode, "run_time": run_time }
+  def addToRenderList(self, rlist, anim_method=Create, mode="parallel", **kwargs):
+    r = { "mo_list": rlist, "anim_method": anim_method, "mode": mode, "kwargs": kwargs  }
     if self.current_section == 'diag':
       self.diag_render_list.append(r)
     else:
@@ -101,11 +101,11 @@ class GVTriangle:
     self.addToRenderList([mo_lbl1, mo_lbl2, mo_lbl3])
   
 
-  def addComment(self, comment, anim_method=Create, mode="parallel", run_time=1.0):
+  def addComment(self, comment, anim_method=Create, mode="parallel", **kwargs):
     if self.current_section != 'proof': return False
-    r = { "mo_list":[], "anim_method": anim_method, "mode": mode, "run_time": run_time }
+    r = { "mo_list":[], "anim_method": anim_method, "mode": mode, "kwargs": kwargs }
     if comment:
-      mo_text = Tex(comment, should_center=False, color="#24FFFF")
+      mo_text = Tex(comment, should_center=False, tex_template=TexFontTemplates.droid_sans)
       if len(self.comment_list) > 0:
         mo_text.next_to(self.comment_list[-1]["mo_list"][0], direction=DOWN, aligned_edge=LEFT)
       r["mo_list"].append(mo_text)

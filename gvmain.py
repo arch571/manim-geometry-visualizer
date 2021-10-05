@@ -11,8 +11,8 @@ class GV(Scene):
 
       [diag]
       Triangle(ABC)
-      Ang(A) = 90
-      Ang(B) = 70
+      Ang(A) = 70
+      Ang(B) = 60
 
       [proof]
       Line(DE, A) || BC #desc 1. Draw line DE parallel to BC passing thru A

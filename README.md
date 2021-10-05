@@ -8,8 +8,8 @@ Title("Sum of angles of a triangle is 180")
 
 [diag]
 Triangle(ABC)
-Ang(A) = 90
-Ang(B) = 70
+Ang(A) = 70
+Ang(B) = 60
 
 [proof]
 Line(DE, A) || BC #desc 1. Draw line DE parallel to BC passing thru A
@@ -20,8 +20,6 @@ HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\
 ```
 
 ## Output Video
-
-https://user-images.githubusercontent.com/86822090/136006531-a7ffc929-db0f-487b-9484-b88d7b064526.mp4
 
 
 ## Run
