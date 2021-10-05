@@ -18,3 +18,6 @@ HighlightAngles(DAB, CBA) #desc 3. $\\angle DAB = \\angle CBA$; corresponding an
 HighlightAngles(CAE, ACB) #desc 4. $\\angle CAE = \\angle BCA$; corresponding angles between parallel lines
 HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\angle CBA$ + $\\angle BCA$ + $\\angle BAC$ = 180
 ```
+
+## Output Video
+https://github.com/arch571/manim-geometry-visualizer/blob/master/media/GV.mp4
