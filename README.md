@@ -20,4 +20,6 @@ HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\
 ```
 
 ## Output Video
-https://github.com/arch571/manim-geometry-visualizer/blob/master/media/GV.mp4?raw=true
+
+https://user-images.githubusercontent.com/86822090/136006531-a7ffc929-db0f-487b-9484-b88d7b064526.mp4
+
