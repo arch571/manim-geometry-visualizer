@@ -21,6 +21,7 @@ HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\
 
 ## Output Video
 
+https://user-images.githubusercontent.com/86822090/136026140-ef6996cb-2bdd-4d8b-8523-2b00735a5c2b.mp4
 
 ## Run
 See [manim](https://www.manim.community/) documentation to install manim and latex on your OS. Use a virtualenv for this project and once manim is installed, run manim 
