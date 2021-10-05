@@ -18,3 +18,8 @@ HighlightAngles(DAB, CBA) #desc 3. $\\angle DAB = \\angle CBA$; corresponding an
 HighlightAngles(CAE, ACB) #desc 4. $\\angle CAE = \\angle BCA$; corresponding angles between parallel lines
 HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\angle CBA$ + $\\angle BCA$ + $\\angle BAC$ = 180
 ```
+
+## Output Video
+
+https://user-images.githubusercontent.com/86822090/136006531-a7ffc929-db0f-487b-9484-b88d7b064526.mp4
+
