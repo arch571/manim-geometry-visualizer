@@ -1,5 +1,5 @@
 # Manim Geometry Visualizer
-Manim geometry visualizer. It uses a DSL (domain specific language) to define simple geomtery problems defined in school mathematics curriculum. This is just a proof of concept, to get familiar with the excellent [manim](https://www.manim.community/) library. The code architecture is rudimentary and will change in future. 
+Manim geometry visualizer. It uses a DSL (domain specific language) to define simple geomtery problems defined in school mathematics curriculum. Based on the DSL, it generates the video. This is just a proof of concept, to get familiar with the excellent [manim](https://www.manim.community/) library. The code architecture is rudimentary and will change in future. 
 
 ## DSL
 ```
@@ -23,3 +23,8 @@ HighlightAngles(BAC, CBA, ACB) #desc 5. From (3) and (4) applying it to (2), $\\
 
 https://user-images.githubusercontent.com/86822090/136006531-a7ffc929-db0f-487b-9484-b88d7b064526.mp4
 
+
+## Run
+See [manim](https://www.manim.community/) documentation to install manim and latex on your OS. Use a virtualenv for this project and once manim is installed, run manim 
+
+`manim -pql gvmain.py`
