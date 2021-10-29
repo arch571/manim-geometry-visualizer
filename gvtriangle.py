@@ -3,9 +3,9 @@ import math as Math
 from manim.utils import space_ops
 
 class GVTriangle:
-  def __init__(self, labels='ABC', angles=[0, 0, 0], height=5):
+  def __init__(self, labels='ABC', angles=None, height=5):
     self.labels = list(labels)
-    self.angles = angles
+    self.angles = [0, 0, 0] if angles is None else angles
     self.height = height
     self.current_section = 'diag'
     self.diag_render_list = []
